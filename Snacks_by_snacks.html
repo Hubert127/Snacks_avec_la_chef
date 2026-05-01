@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Snacks By Snacks – Online Snacks Shopping</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Bebas+Neue:wght@400&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/all.min.css"/>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- ══ HEADER ══ -->
+<header>
+  <div class="h-inner">
+    <div class="logo">
+      <div class="logo-icon">🍔</div>
+      <div class="logo-txt">
+        <span>Snacks by Snacks Avec la Chef</span>
+        <small>Nyamirambo Town</small>
+      </div>
+    </div>
+    <div class="search-bar">
+      <input id="searchInp" type="text" placeholder="Search snacks, burgers, sandwiches…"/>
+      <button onclick="doSearch()"><i class="fas fa-search"></i></button>
+    </div>
+    <div class="h-actions">
+      <button class="btn-signin" id="signinBtn" onclick="openAuth()">
+        <i class="fas fa-user"></i> Sign In
+      </button>
+      <div class="user-pill" id="userPill" onclick="toggleUserMenu()">
+        <div class="u-avatar" id="uAvatar"></div>
+        <span id="uName"></span>
+        <i class="fas fa-chevron-down" id="uChevron" style="color:rgba(255,255,255,.5);font-size:.68rem;transition:.2s"></i>
+        <!-- Dropdown -->
+        <div class="user-dropdown" id="userDropdown">
+          <div class="ud-profile">
+            <div class="ud-avatar" id="udAvatar"></div>
+            <div>
+              <div class="ud-name" id="udName"></div>
+              <div class="ud-email" id="udEmail"></div>
+            </div>
+          </div>
+          <div class="ud-divider"></div>
+          <button class="ud-item" onclick="closeUserMenu()"><i class="fas fa-user-circle"></i> My Profile</button>
+          <button class="ud-item" onclick="closeUserMenu()"><i class="fas fa-box"></i> My Orders</button>
+          <button class="ud-item" onclick="closeUserMenu()"><i class="fas fa-heart"></i> Wishlist</button>
+          <button class="ud-item" onclick="closeUserMenu()"><i class="fas fa-map-marker-alt"></i> Addresses</button>
+          <div class="ud-divider"></div>
+          <button class="ud-item ud-logout" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</button>
+        </div>
+      </div>
+      <button class="btn-cart" onclick="toggleCart()">
+        <i class="fas fa-fire"></i> Order
+        <span class="c-badge" id="cartBadge">0</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+
+  <!-- Sliding background images -->
+  <div class="hero-bg-slides">
+    <!-- Row 1: slides RIGHT →  (duplicated for seamless loop) -->
+    <div class="slide-track slide-track-1" id="row1"></div>
+    <!-- Row 2: slides LEFT ← (duplicated for seamless loop) -->
+    <div class="slide-track slide-track-2" id="row2"></div>
+  </div>
+
+  <div class="h-inner-hero">
+    <div class="h-badge">🛒 Now Deliver Now your Best Delicious Snacks</div>
+    <h1>Snacks By Snacks<br/>Delivered <em>Fast</em> to You</h1>
+    <p>Order online, pay with <strong>MTN MoMo</strong> — get your snacks in 30–60 mins!</p>
+    <div class="h-btns">
+      <button class="btn-prim" onclick="document.getElementById('shopSec').scrollIntoView({behavior:'smooth'})">🛍️ Shop Now</button>
+      <button class="btn-ghost" onclick="openAuth()">📱 Create Account</button>
+    </div>
+    <div class="h-stats">
+      <div><div class="stat-n">500+</div><div class="stat-l">Products</div></div>
+      <div><div class="stat-n">30min</div><div class="stat-l">Delivery</div></div>
+      <div><div class="stat-n">4.8★</div><div class="stat-l">Rating</div></div>
+      <div><div class="stat-n">1,200+</div><div class="stat-l">Customers</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ MAIN ══ -->
+<div class="shop-sec" id="shopSec">
+  <div class="feats">
+    <div class="feat"><div class="feat-icon" style="background:#ede7f6">🚚</div><h3>Fast Delivery</h3><p>30–60 min to your doorstep in Kicukiro</p></div>
+    <div class="feat"><div class="feat-icon" style="background:#fff3e0">📱</div><h3>Pay with MoMo</h3><p>USSD *182*8*1*<strong style="color:var(--lime);font-weight:900">736568</strong># instantly</p></div>
+    <div class="feat"><div class="feat-icon" style="background:#ede7f6">✅</div><h3>Fresh Quality</h3><p>Handpicked from trusted local farms daily</p></div>
+    <div class="feat"><div class="feat-icon" style="background:#fce8e2">🔒</div><h3>Secure Orders</h3><p>Encrypted checkout & payment confirmation</p></div>
+  </div>
+  <div>
+    <div class="sec-hd"><h2>Categories</h2></div>
+    <div class="cats-wrap"><div class="cats-inner" id="catsEl"></div></div>
+  </div>
+  <div>
+    <div class="sec-hd">
+      <h2 id="prodTitle">All Products</h2>
+      <span class="count-pill" id="prodCnt"></span>
+    </div>
+    <div class="prod-grid" id="prodGrid"></div>
+  </div>
+</div>
+
+<footer style="background:#1a0533;color:rgba(255,255,255,.45);text-align:center;padding:22px;font-size:.8rem;margin-top:50px">
+  <p>© 2026 <strong style="color:#fff">Snacks by Snacks Avec la Chef</strong> · Pay with <span style="color:var(--momo);font-weight:800">MTN MoMo *182*8*1*736568#</span></p>
+</footer>
+
+<!-- ══ CART SIDEBAR ══ -->
+<div class="c-overlay" id="cOverlay" onclick="toggleCart()"></div>
+<div class="c-sidebar" id="cSidebar">
+  <div class="c-hdr">
+    <h2>🛒 Your Cart</h2>
+    <button class="c-close" onclick="toggleCart()"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="c-body" id="cBody"></div>
+  <div id="cFootWrap" style="display:none">
+    <div class="c-foot-wrap">
+      <div class="cf-row"><span>Subtotal</span><span id="cfSub"></span></div>
+      <div class="cf-row"><span>🚚 Delivery</span><span>500 RWF</span></div>
+      <div class="cf-tot"><span>Total</span><span id="cfTot"></span></div>
+      <button class="btn-checkout" onclick="openPay()">
+        <i class="fas fa-fire"></i> Checkout with MoMo
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SIGN IN MODAL ══ -->
+<div class="overlay" id="authOv">
+  <div class="auth-box" style="position:relative">
+    <div class="auth-top">
+      <button class="auth-top-close" onclick="closeOv('authOv')"><i class="fas fa-times"></i></button>
+      <h2>Welcome to Snacks By Snacks Avec La Chef</h2>
+      <p>Sign in for faster checkout & order tracking</p>
+    </div>
+    <div class="auth-content">
+      <div class="auth-tabs">
+        <button class="a-tab active" id="tLogin" onclick="switchTab('login')">Sign In</button>
+        <button class="a-tab" id="tReg" onclick="switchTab('reg')">Create Account</button>
+      </div>
+
+      <!-- LOGIN -->
+      <div id="fLogin">
+        <div class="fg">
+          <label>Email / Phone <span>*</span></label>
+          <div class="inp-wrap">
+            <i class="fas fa-envelope i-icon"></i>
+            <input class="inp ic" id="lEmail" type="text" placeholder="your@email.com or 078xxxxxxx"/>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Password <span>*</span></label>
+          <div class="inp-wrap">
+            <i class="fas fa-lock i-icon"></i>
+            <input class="inp ic" id="lPass" type="password" placeholder="Enter your password" style="padding-right:40px"/>
+            <button class="inp-toggle" onclick="togPwd('lPass',this)"><i class="fas fa-eye"></i></button>
+          </div>
+        </div>
+        <div style="text-align:right;margin-bottom:14px"><a href="#" style="font-size:.78rem;color:var(--green);font-weight:700">Forgot password?</a></div>
+        <button class="btn-auth" onclick="doLogin()"><i class="fas fa-sign-in-alt"></i> &nbsp;Sign In</button>
+        <div class="a-divider">or continue with</div>
+        <div class="soc-btns">
+          <button class="soc-btn" onclick="socialLogin('Google')" style="border:2px solid #e0e0e0;background:#fff;color:#444">
+            <span style="font-size:1rem">🇬</span> Google
+          </button>
+          <button class="soc-btn" onclick="socialLogin('Facebook')" style="border:none;background:#1877f2;color:#fff">
+            <i class="fab fa-facebook-f"></i> Facebook
+          </button>
+        </div>
+        <p class="auth-note">Don't have an account? <a href="#" onclick="switchTab('reg')">Create one free</a></p>
+      </div>
+
+      <!-- REGISTER -->
+      <div id="fReg" style="display:none">
+        <div class="f-row">
+          <div class="fg"><label>First Name <span>*</span></label><input class="inp" id="rFirst" type="text" placeholder="Jean"/></div>
+          <div class="fg"><label>Last Name <span>*</span></label><input class="inp" id="rLast" type="text" placeholder="Mugisha"/></div>
+        </div>
+        <div class="fg">
+          <label>Email Address <span>*</span></label>
+          <div class="inp-wrap"><i class="fas fa-envelope i-icon"></i><input class="inp ic" id="rEmail" type="email" placeholder="you@email.com"/></div>
+        </div>
+        <div class="fg">
+          <label>MTN MoMo Phone <span>*</span></label>
+          <div class="inp-wrap">
+            <span class="inp-pre">+250</span>
+            <input class="inp pr" id="rPhone" type="tel" maxlength="9" placeholder="078xxxxxxx" oninput="this.value=this.value.replace(/\D/g,'')"/>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Password <span>*</span></label>
+          <div class="inp-wrap">
+            <i class="fas fa-lock i-icon"></i>
+            <input class="inp ic" id="rPass" type="password" placeholder="Min 8 characters" style="padding-right:40px"/>
+            <button class="inp-toggle" onclick="togPwd('rPass',this)"><i class="fas fa-eye"></i></button>
+          </div>
+        </div>
+        <div class="fg"><label>Delivery Address <span>*</span></label><input class="inp" id="rAddr" type="text" placeholder="KG 5 Ave, Kicukiro Sector"/></div>
+        <button class="btn-auth" onclick="doRegister()"><i class="fas fa-user-plus"></i> &nbsp;Create Account</button>
+        <p class="auth-note">Already have an account? <a href="#" onclick="switchTab('login')">Sign in</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PRODUCT DETAIL MODAL ══ -->
+<div class="overlay" id="pdOv">
+  <div class="pd-box" id="pdContent"></div>
+</div>
+
+<!-- ══ PAYMENT MODAL ══ -->
+<div class="overlay" id="payOv">
+  <div class="pay-box">
+    <div class="pay-hdr">
+      <h2>💳 MoMo Checkout</h2>
+      <button class="pay-close" onclick="closeOv('payOv')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="steps" id="stepsEl">
+      <div class="s-item active" id="stp1"><div class="s-dot">1</div><div class="s-lbl">Review</div></div>
+      <div class="s-item" id="stp2"><div class="s-dot">2</div><div class="s-lbl">Details</div></div>
+      <div class="s-item" id="stp3"><div class="s-dot">3</div><div class="s-lbl">Pay</div></div>
+      <div class="s-item" id="stp4"><div class="s-dot"><i class="fas fa-check" style="font-size:.62rem"></i></div><div class="s-lbl">Done</div></div>
+    </div>
+    <div class="pay-body" id="payBody"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><span id="toastMsg"></span></div>
+
+<script src="script.js"></script>
+</body>
+</html>

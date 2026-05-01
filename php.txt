@@ -1,0 +1,111 @@
+<?php
+session_start();
+include("../config/db.php");
+if(isset($_GET['resolve'])){
+$id = $_GET['resolve'];
+
+$update = "UPDATE incidents SET status='Resolved' WHERE incident_id='$id'";
+mysqli_query($conn, $update);
+
+header("Location: manage_incidents.php");
+exit();
+}
+if(!isset($_SESSION['user_id'])){
+header("Location: ../auth/login.php");
+exit();
+}
+
+// Filter logic
+$filter = "";
+
+if(isset($_GET['status'])){
+$status = $_GET['status'];
+$filter = "WHERE incidents.status='$status'";
+}
+
+// Fetch incidents
+$query = "
+SELECT incidents.*, users.full_name
+FROM incidents
+JOIN users ON incidents.user_id = users.user_id
+$filter
+ORDER BY created_at DESC
+";
+
+$result = mysqli_query($conn, $query);
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Manage Incidents</title>
+<link rel="stylesheet" href="../admin/style.css">
+</head>
+<body>
+
+<div class="admin-wrapper">
+
+<div class="sidebar">
+<h2>Leader</h2>
+<ul>
+<li><a href="dashboard.php">Dashboard</a></li>
+<li><a href="manage_incidents.php" class="active">View Reports</a></li>
+<li><a href="manage_residents.php">Residents</a></li>
+<li><a href="../auth/logout.php">Logout</a></li>
+</ul>
+</div>
+
+<div class="content">
+<h2>All Incident Reports</h2>
+<div style="margin-bottom:15px;">
+<a href="manage_incidents.php">All</a> |
+<a href="manage_incidents.php?status=Pending">Pending</a> |
+<a href="manage_incidents.php?status=Resolved">Resolved</a>
+</div>
+<table border="1" width="100%" cellpadding="10">
+<tr>
+<th>ID</th>
+<th>Resident</th>
+<th>Title</th>
+<th>Description</th>
+<th>Status</th>
+<th>Date</th>
+<th>Action</th>
+</tr>
+
+<?php while($row = mysqli_fetch_assoc($result)) { ?>
+<tr>
+<td><?php echo $row['incident_id']; ?></td>
+<td><?php echo $row['full_name']; ?></td>
+<td><?php echo $row['title']; ?></td>
+<td><?php echo $row['description']; ?></td>
+<td>
+<?php
+if($row['status'] == 'Pending'){
+echo "<span class='status-pending'>Pending</span>";
+} else {
+echo "<span class='status-resolved'>Resolved</span>";
+}
+?>
+</td>
+<td><?php echo $row['created_at']; ?></td>
+<td>
+<?php if($row['status'] == 'Pending') { ?>
+<a href="manage_incidents.php?resolve=<?php echo $row['incident_id']; ?>" class="btn-resolve">
+Mark as Resolved
+</a>
+<?php } else { ?>
+---
+<?php } ?>
+</td>
+</tr>
+<?php } ?>
+
+</table>
+
+</div>
+
+</div>
+
+</body>
+</html>
