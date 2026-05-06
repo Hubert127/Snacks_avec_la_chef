@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Avec la Chef – Premium Food Services</title>
+<title>Snacks Avec la Chef – Order Online</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Bebas+Neue:wght@400&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/all.min.css"/>
 <link rel="stylesheet" href="style.css"/>
@@ -16,9 +16,13 @@
     <div class="logo">
       <div class="logo-icon">🍔</div>
       <div class="logo-txt">
-        <strong>Avec la Chef</strong>
-        <p>Nyamirambo Town</p>
+        <span>Avec la Chef</span>
+        <small>Nyamirambo Town</small>
       </div>
+    </div>
+    <div class="search-bar">
+      <input id="searchInp" type="text" placeholder="Search snacks, burgers, sandwiches…"/>
+      <button onclick="doSearch()">🔎<i class="fas fa-search"></i></button>
     </div>
     <div class="h-actions">
       <button class="btn-signin btn-signin-orange" id="signinBtn" onclick="openAuth()">
@@ -46,141 +50,35 @@
           <button class="ud-item ud-logout" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</button>
         </div>
       </div>
+      <button class="btn-cart" onclick="toggleCart()">
+        <i class="fas fa-fire"></i> Order
+        <span class="c-badge" id="cartBadge">0</span>
+      </button>
     </div>
   </div>
 </header>
 
-<!-- ══ HERO ══ -->
-<section class="hero">
-
-  <!-- Sliding background images -->
-  <div class="hero-bg-slides">
-    <!-- Row 1: slides RIGHT →  (duplicated for seamless loop) -->
-    <div class="slide-track slide-track-1" id="row1"></div>
-    <!-- Row 2: slides LEFT ← (duplicated for seamless loop) -->
-    <div class="slide-track slide-track-2" id="row2"></div>
+<!-- ══ NAVIGATION BREADCRUMB ══ -->
+<nav class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="index.html" class="breadcrumb-link">🏠 Home</a>
+    <span class="breadcrumb-separator">›</span>
+    <span class="breadcrumb-current">🍔 Snacks</span>
   </div>
+</nav>
 
-  <div class="h-inner-hero">
-    <div class="h-badge">👨‍🍳 Premium Food Services by Professional Chefs</div>
-    <h1>Avec la Chef<br/>Excellence <em>Delivered</em> to You</h1>
-    <p>Choose from our delicious snacks or book a private chef for your special occasions</p>
-    
-    <!-- Action Buttons -->
-    <div class="hero-actions">
-      <button class="btn-hero btn-hero-primary" onclick="window.location.href='products.html'">
-        <i class="fas fa-shopping-basket"></i> Order Now
-      </button>
-      <button class="btn-hero btn-hero-secondary" onclick="window.location.href='private-plate.html'">
-        <i class="fas fa-chef-hat"></i> Book Chef
-      </button>
-      <button class="btn-hero btn-hero-outline" onclick="openAuth()">
-        <i class="fas fa-user-plus"></i> Create Account
-      </button>
-    </div>
-    
-    <!-- Stats Box -->
-    <div class="hero-stats-box">
-      <div class="stat-item">
-        <div class="stat-icon">⭐</div>
-        <div class="stat-info">
-          <div class="stat-number">4.8</div>
-          <div class="stat-label">Rating</div>
-        </div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-icon">🍔</div>
-        <div class="stat-info">
-          <div class="stat-number">18+</div>
-          <div class="stat-label">Products</div>
-        </div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-icon">👥</div>
-        <div class="stat-info">
-          <div class="stat-number">500+</div>
-          <div class="stat-label">Customers</div>
-        </div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-icon">🚚</div>
-        <div class="stat-info">
-          <div class="stat-number">30-60</div>
-          <div class="stat-label">Min Delivery</div>
-        </div>
-      </div>
-    </div>
+<!-- ══ PRODUCTS SECTION ══ -->
+<div class="shop-sec" id="shopSec">
+  <div>
+    <div class="sec-hd"><h2>Categories</h2></div>
+    <div class="cats-wrap"><div class="cats-inner" id="catsEl"></div></div>
   </div>
-</section>
-
-<!-- ══ SPLIT SERVICES ══ -->
-<section class="split-services">
-  <div class="split-container">
-    <!-- Left Split: Snacks -->
-    <div class="split-left">
-      <div class="split-image">
-        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&h=400&fit=crop&auto=format" alt="Snacks"/>
-      </div>
-      <div class="split-content">
-        <h2>Snacks Avec la Chef</h2>
-        <p>Delicious snacks, burgers, sandwiches, and more delivered fast to your doorstep. Perfect for quick meals and cravings.</p>
-        <div class="split-features">
-          <div class="feature-item">
-            <i class="fas fa-clock"></i>
-            <span>30-60 min delivery</span>
-          </div>
-          <div class="feature-item">
-            <i class="fas fa-mobile-alt"></i>
-            <span>Pay with MTN MoMo</span>
-          </div>
-          <div class="feature-item">
-            <i class="fas fa-star"></i>
-            <span>4.8★ rating</span>
-          </div>
-        </div>
-        <button class="btn-prim" onclick="window.location.href='products.html'">
-          <i class="fas fa-shopping-basket"></i> Order Now
-        </button>
-      </div>
+  <div>
+    <div class="sec-hd">
+      <h2 id="prodTitle">All Products</h2>
+      <span class="count-pill" id="prodCnt"></span>
     </div>
-    
-    <!-- Right Split: Private Plate -->
-    <div class="split-right">
-      <div class="split-image">
-        <img src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=600&h=400&fit=crop&auto=format" alt="Chef"/>
-      </div>
-      <div class="split-content">
-        <h2>Private Plate Avec la Chef</h2>
-        <p>Professional chefs for your home cooking needs. Perfect for events, family dinners, and special occasions.</p>
-        <div class="split-features">
-          <div class="feature-item">
-            <i class="fas fa-utensils"></i>
-            <span>Custom menus</span>
-          </div>
-          <div class="feature-item">
-            <i class="fas fa-home"></i>
-            <span>Home service</span>
-          </div>
-          <div class="feature-item">
-            <i class="fas fa-calendar-check"></i>
-            <span>Book anytime</span>
-          </div>
-        </div>
-        <button class="btn-ghost" onclick="window.location.href='private-plate.html'">
-          <i class="fas fa-chef-hat"></i> Book Chef
-        </button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══ SHOP FEATURES ══ -->
-<div class="shop-feats">
-  <div class="feats">
-    <div class="feat"><div class="feat-icon" style="background:#ede7f6">🚚</div><h3>Fast Delivery</h3><p>30–60 min to your doorstep</p></div>
-    <div class="feat"><div class="feat-icon" style="background:#fff3e0">📱</div><h3>Pay with MoMo</h3><p>USSD *182*8*1*<strong style="color:var(--lime);font-weight:900">736568</strong># instantly</p></div>
-    <div class="feat"><div class="feat-icon" style="background:#ede7f6">✅</div><h3>Fresh Quality</h3><p>Handpicked from trusted local farms daily</p></div>
-    <div class="feat"><div class="feat-icon" style="background:#fce8e2">🔒</div><h3>Secure Orders</h3><p>Encrypted checkout & payment confirmation</p></div>
+    <div class="prod-grid" id="prodGrid"></div>
   </div>
 </div>
 
@@ -213,7 +111,7 @@
   <div class="auth-box" style="position:relative">
     <div class="auth-top">
       <button class="auth-top-close" onclick="closeOv('authOv')"><i class="fas fa-times"></i></button>
-      <h2>Welcome to Snacks By Snacks Avec La Chef</h2>
+      <h2>Welcome to Snacks Avec la Chef</h2>
       <p>Sign in for faster checkout & order tracking</p>
     </div>
     <div class="auth-content">

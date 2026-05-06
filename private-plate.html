@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Private Plate Avec la Chef – Book a Chef</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Bebas+Neue:wght@400&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/all.min.css"/>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- ══ HEADER ══ -->
+<header>
+  <div class="h-inner">
+    <div class="logo">
+      <div class="logo-icon">👨‍🍳</div>
+      <div class="logo-txt">
+        <span>Avec la Chef</span>
+        <small>Nyamirambo Town</small>
+      </div>
+    </div>
+    <div class="search-bar">
+      <input id="searchInp" type="text" placeholder="Search chef services, menus…"/>
+      <button onclick="doSearch()">🔎<i class="fas fa-search"></i></button>
+    </div>
+    <div class="h-actions">
+      <button class="btn-signin" id="signinBtn" onclick="openAuth()">
+        <i class="fas fa-user"></i> Sign In
+      </button>
+      <div class="user-pill" id="userPill" onclick="toggleUserMenu()">
+        <div class="u-avatar" id="uAvatar"></div>
+        <span id="uName"></span>
+        <i class="fas fa-chevron-down" id="uChevron" style="color:rgba(255,255,255,.5);font-size:.68rem;transition:.2s"></i>
+        <!-- Dropdown -->
+        <div class="user-dropdown" id="userDropdown">
+          <div class="ud-profile">
+            <div class="ud-avatar" id="udAvatar"></div>
+            <div>
+              <div class="ud-name" id="udName"></div>
+              <div class="ud-email" id="udEmail"></div>
+            </div>
+          </div>
+          <div class="ud-divider"></div>
+          <button class="ud-item" onclick="closeUserMenu()"><i class="fas fa-user-circle"></i> My Profile</button>
+          <button class="ud-item" onclick="closeUserMenu()"><i class="fas fa-box"></i> My Orders</button>
+          <button class="ud-item" onclick="closeUserMenu()"><i class="fas fa-heart"></i> Wishlist</button>
+          <button class="ud-item" onclick="closeUserMenu()"><i class="fas fa-map-marker-alt"></i> Addresses</button>
+          <div class="ud-divider"></div>
+          <button class="ud-item ud-logout" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</button>
+        </div>
+      </div>
+      <button class="btn-cart" onclick="toggleBookings()">
+        <i class="fas fa-calendar-check"></i> Bookings
+        <span class="c-badge" id="bookingBadge">0</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ══ NAVIGATION BREADCRUMB ══ -->
+<nav class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="index.html" class="breadcrumb-link">🏠 Home</a>
+    <span class="breadcrumb-separator">›</span>
+    <span class="breadcrumb-current">👨‍🍳 Private Plate</span>
+  </div>
+</nav>
+
+<!-- ══ HERO SECTION ══ -->
+<section class="chef-hero">
+  <div class="chef-hero-content">
+    <h1>Private Plate Avec la Chef</h1>
+    <p>Professional chefs bringing culinary excellence to your home. Perfect for events, family dinners, and special occasions.</p>
+    <div class="chef-stats">
+      <div class="chef-stat">
+        <div class="stat-number">25+</div>
+        <div class="stat-label">Expert Chefs</div>
+      </div>
+      <div class="chef-stat">
+        <div class="stat-number">500+</div>
+        <div class="stat-label">Events Catered</div>
+      </div>
+      <div class="chef-stat">
+        <div class="stat-number">4.9★</div>
+        <div class="stat-label">Customer Rating</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SERVICES SECTION ══ -->
+<div class="chef-services">
+  <div class="sec-hd"><h2>Our Chef Services</h2></div>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-icon">🎉</div>
+      <h3>Event Catering</h3>
+      <p>Professional chefs for birthdays, weddings, corporate events, and special celebrations.</p>
+      <ul class="service-features">
+        <li><i class="fas fa-check"></i> Custom menu planning</li>
+        <li><i class="fas fa-check"></i> On-site cooking</li>
+        <li><i class="fas fa-check"></i> Full setup & cleanup</li>
+      </ul>
+      <button class="btn-prim" onclick="bookService('event')">Book Event Chef</button>
+    </div>
+    
+    <div class="service-card">
+      <div class="service-icon">🏠</div>
+      <h3>Home Dining</h3>
+      <p>Intimate dining experiences with personal chef service in the comfort of your home.</p>
+      <ul class="service-features">
+        <li><i class="fas fa-check"></i> Multi-course meals</li>
+        <li><i class="fas fa-check"></i> Dietary accommodations</li>
+        <li><i class="fas fa-check"></i> Wine pairing available</li>
+      </ul>
+      <button class="btn-prim" onclick="bookService('home')">Book Home Chef</button>
+    </div>
+    
+    <div class="service-card">
+      <div class="service-icon">🍳</div>
+      <h3>Private Cooking Classes</h3>
+      <p>Learn from professional chefs with personalized cooking lessons in your kitchen.</p>
+      <ul class="service-features">
+        <li><i class="fas fa-check"></i> One-on-one instruction</li>
+        <li><i class="fas fa-check"></i> All ingredients provided</li>
+        <li><i class="fas fa-check"></i> Recipe book included</li>
+      </ul>
+      <button class="btn-prim" onclick="bookService('class')">Book Cooking Class</button>
+    </div>
+    
+    <div class="service-card">
+      <div class="service-icon">💼</div>
+      <h3>Corporate Services</h3>
+      <p>Professional catering for business meetings, conferences, and corporate events.</p>
+      <ul class="service-features">
+        <li><i class="fas fa-check"></i> Business lunch packages</li>
+        <li><i class="fas fa-check"></i> Conference catering</li>
+        <li><i class="fas fa-check"></i> Team building events</li>
+      </ul>
+      <button class="btn-prim" onclick="bookService('corporate')">Book Corporate Chef</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ CHEFS SECTION ══ -->
+<div class="chefs-section">
+  <div class="sec-hd"><h2>Meet Our Expert Chefs</h2></div>
+  <div class="chefs-grid">
+    <div class="chef-card">
+      <div class="chef-image">
+        <img src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=300&h=300&fit=crop&auto=format" alt="Chef Jean-Pierre"/>
+        <div class="chef-badge">⭐ 4.9</div>
+      </div>
+      <div class="chef-info">
+        <h3>Chef Jean-Pierre</h3>
+        <p class="chef-specialty">French & Rwandan Fusion</p>
+        <p class="chef-desc">15+ years experience in fine dining and traditional Rwandan cuisine.</p>
+        <div class="chef-details">
+          <span><i class="fas fa-utensils"></i> 50+ menus</span>
+          <span><i class="fas fa-users"></i> 200+ events</span>
+        </div>
+        <button class="btn-ghost" onclick="viewChef('jean-pierre')">View Profile</button>
+      </div>
+    </div>
+    
+    <div class="chef-card">
+      <div class="chef-image">
+        <img src="https://images.unsplash.com/photo-1581299894007-aaa50297cf8f?w=300&h=300&fit=crop&auto=format" alt="Chef Marie"/>
+        <div class="chef-badge">⭐ 4.8</div>
+      </div>
+      <div class="chef-info">
+        <h3>Chef Marie</h3>
+        <p class="chef-specialty">Mediterranean & Vegetarian</p>
+        <p class="chef-desc">Specializes in healthy, organic Mediterranean and vegetarian cuisine.</p>
+        <div class="chef-details">
+          <span><i class="fas fa-utensils"></i> 40+ menus</span>
+          <span><i class="fas fa-users"></i> 150+ events</span>
+        </div>
+        <button class="btn-ghost" onclick="viewChef('marie')">View Profile</button>
+      </div>
+    </div>
+    
+    <div class="chef-card">
+      <div class="chef-image">
+        <img src="https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?w=300&h=300&fit=crop&auto=format" alt="Chef Samuel"/>
+        <div class="chef-badge">⭐ 5.0</div>
+      </div>
+      <div class="chef-info">
+        <h3>Chef Samuel</h3>
+        <p class="chef-specialty">BBQ & Grilling Expert</p>
+        <p class="chef-desc">Master of traditional Rwandan BBQ and international grilling techniques.</p>
+        <div class="chef-details">
+          <span><i class="fas fa-utensils"></i> 60+ menus</span>
+          <span><i class="fas fa-users"></i> 300+ events</span>
+        </div>
+        <button class="btn-ghost" onclick="viewChef('samuel')">View Profile</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ BOOKING FORM ══ -->
+<div class="booking-section">
+  <div class="sec-hd"><h2>Book Your Chef</h2></div>
+  <div class="booking-form">
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Service Type <span>*</span></label>
+        <select class="inp" id="serviceType">
+          <option value="">Select Service</option>
+          <option value="event">Event Catering</option>
+          <option value="home">Home Dining</option>
+          <option value="class">Cooking Class</option>
+          <option value="corporate">Corporate Service</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label>Event Date <span>*</span></label>
+        <input class="inp" type="date" id="eventDate"/>
+      </div>
+      
+      <div class="form-group">
+        <label>Number of Guests <span>*</span></label>
+        <input class="inp" type="number" id="guestCount" placeholder="e.g. 25"/>
+      </div>
+      
+      <div class="form-group">
+        <label>Preferred Chef</label>
+        <select class="inp" id="preferredChef">
+          <option value="">Any Chef</option>
+          <option value="jean-pierre">Chef Jean-Pierre</option>
+          <option value="marie">Chef Marie</option>
+          <option value="samuel">Chef Samuel</option>
+        </select>
+      </div>
+      
+      <div class="form-group full-width">
+        <label>Event Location <span>*</span></label>
+        <input class="inp" type="text" id="eventLocation" placeholder="Full address"/>
+      </div>
+      
+      <div class="form-group full-width">
+        <label>Special Requirements</label>
+        <textarea class="inp" id="specialRequirements" placeholder="Dietary restrictions, allergies, special requests..." rows="3"></textarea>
+      </div>
+    </div>
+    
+    <button class="btn-prim" onclick="submitBooking()" style="width:100%;margin-top:20px">
+      <i class="fas fa-calendar-check"></i> Submit Booking Request
+    </button>
+  </div>
+</div>
+
+<footer style="background:#1a0533;color:rgba(255,255,255,.45);text-align:center;padding:22px;font-size:.8rem;margin-top:50px">
+  <p>© 2026 <strong style="color:#fff">Avec la Chef</strong> · Professional Chef Services</p>
+</footer>
+
+<!-- ══ SIGN IN MODAL ══ -->
+<div class="overlay" id="authOv">
+  <div class="auth-box" style="position:relative">
+    <div class="auth-top">
+      <button class="auth-top-close" onclick="closeOv('authOv')"><i class="fas fa-times"></i></button>
+      <h2>Welcome to Private Plate Avec la Chef</h2>
+      <p>Sign in to manage your chef bookings</p>
+    </div>
+    <div class="auth-content">
+      <div class="auth-tabs">
+        <button class="a-tab active" id="tLogin" onclick="switchTab('login')">Sign In</button>
+        <button class="a-tab" id="tReg" onclick="switchTab('reg')">Create Account</button>
+      </div>
+
+      <!-- LOGIN -->
+      <div id="fLogin">
+        <div class="fg">
+          <label>Email / Phone <span>*</span></label>
+          <div class="inp-wrap">
+            <i class="fas fa-envelope i-icon"></i>
+            <input class="inp ic" id="lEmail" type="text" placeholder="your@email.com or 078xxxxxxx"/>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Password <span>*</span></label>
+          <div class="inp-wrap">
+            <i class="fas fa-lock i-icon"></i>
+            <input class="inp ic" id="lPass" type="password" placeholder="Enter your password" style="padding-right:40px"/>
+            <button class="inp-toggle" onclick="togPwd('lPass',this)"><i class="fas fa-eye"></i></button>
+          </div>
+        </div>
+        <button class="btn-auth" onclick="doLogin()"><i class="fas fa-sign-in-alt"></i> &nbsp;Sign In</button>
+        <p class="auth-note">Don't have an account? <a href="#" onclick="switchTab('reg')">Create one free</a></p>
+      </div>
+
+      <!-- REGISTER -->
+      <div id="fReg" style="display:none">
+        <div class="f-row">
+          <div class="fg"><label>First Name <span>*</span></label><input class="inp" id="rFirst" type="text" placeholder="Jean"/></div>
+          <div class="fg"><label>Last Name <span>*</span></label><input class="inp" id="rLast" type="text" placeholder="Mugisha"/></div>
+        </div>
+        <div class="fg">
+          <label>Email Address <span>*</span></label>
+          <div class="inp-wrap"><i class="fas fa-envelope i-icon"></i><input class="inp ic" id="rEmail" type="email" placeholder="you@email.com"/></div>
+        </div>
+        <div class="fg">
+          <label>Phone <span>*</span></label>
+          <div class="inp-wrap">
+            <span class="inp-pre">+250</span>
+            <input class="inp pr" id="rPhone" type="tel" maxlength="9" placeholder="078xxxxxxx" oninput="this.value=this.value.replace(/\D/g,'')"/>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Password <span>*</span></label>
+          <div class="inp-wrap">
+            <i class="fas fa-lock i-icon"></i>
+            <input class="inp ic" id="rPass" type="password" placeholder="Min 8 characters" style="padding-right:40px"/>
+            <button class="inp-toggle" onclick="togPwd('rPass',this)"><i class="fas fa-eye"></i></button>
+          </div>
+        </div>
+        <button class="btn-auth" onclick="doRegister()"><i class="fas fa-user-plus"></i> &nbsp;Create Account</button>
+        <p class="auth-note">Already have an account? <a href="#" onclick="switchTab('login')">Sign in</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><span id="toastMsg"></span></div>
+
+<script src="script.js"></script>
+</body>
+</html>

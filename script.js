@@ -206,23 +206,57 @@ function loadCart(){
   }catch(e){ cart = []; }
 }
 
-/* ─── INIT ────────────────────────────────── */
-document.addEventListener('DOMContentLoaded', () => {
+/* ─── PRIVATE PLATE FUNCTIONS ─────────────── */
+function bookService(serviceType){
+  document.getElementById('serviceType').value = serviceType;
+  document.getElementById('eventDate').focus();
+  toast(`📅 Selected ${serviceType} service`, 'g');
+}
+
+function viewChef(chefId){
+  toast(`👨‍🍳 Viewing ${chefId} profile`, 'g');
+  // In a real app, this would navigate to chef detail page
+}
+
+function submitBooking(){
+  const serviceType = document.getElementById('serviceType')?.value;
+  const eventDate = document.getElementById('eventDate')?.value;
+  const guestCount = document.getElementById('guestCount')?.value;
+  const eventLocation = document.getElementById('eventLocation')?.value;
+  
+  if(!serviceType || !eventDate || !guestCount || !eventLocation){
+    toast('⚠️ Please fill all required fields', '');
+    return;
+  }
+  
+  toast('✅ Booking request submitted! We\'ll contact you soon.', 'g');
+  // Reset form
+  document.getElementById('serviceType').value = '';
+  document.getElementById('eventDate').value = '';
+  document.getElementById('guestCount').value = '';
+  document.getElementById('preferredChef').value = '';
+  document.getElementById('eventLocation').value = '';
+  document.getElementById('specialRequirements').value = '';
+}
+
+function toggleBookings(){
+  // Placeholder for bookings sidebar functionality
+  toast('📅 Bookings feature coming soon', '');
+}
+
+/* ─── INIT ──────────────────────────────── */
+document.addEventListener('DOMContentLoaded',()=>{
   loadCart();
-  renderCats();
-  renderProds();
-  buildHeroSlides();
-  updateCartUI();
-
-  document.getElementById('searchInp').addEventListener('keyup', e => {
-    searchQ = e.target.value.toLowerCase();
-    renderProds();
-  });
-
-  // close overlays on backdrop click
-  document.querySelectorAll('.overlay').forEach(ov => {
-    ov.addEventListener('click', e => { if(e.target === ov) ov.classList.remove('open'); });
-  });
+  // Always build hero slides on index.html
+  if(document.getElementById('row1')){
+    buildHeroSlides();
+  }
+  // Only render products if we're on products page
+  if(document.getElementById('catsEl')){
+    renderCats(); renderProds();
+    updateCartUI();
+    document.getElementById('searchInp').addEventListener('keyup',e=>{searchQ=e.target.value.toLowerCase();renderProds();});
+  }
 
   // close user dropdown on outside click
   document.addEventListener('click', e => {
