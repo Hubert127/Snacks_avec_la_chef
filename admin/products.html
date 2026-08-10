@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Products – Admin – Avec la Chef</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Bebas+Neue:wght@400&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/all.min.css"/>
+<link rel="stylesheet" href="admin.css"/>
+</head>
+<body>
+
+<div class="admin-wrap">
+  <aside class="admin-sidebar">
+    <div class="as-logo">
+      <div class="emoji">🍔</div>
+      <div class="as-logo-txt"><strong>Avec la Chef</strong><small>Admin</small></div>
+    </div>
+    <nav class="as-nav">
+      <a href="dashboard.html" class="as-link"><i class="fas fa-gauge-high"></i> <span>Dashboard</span></a>
+      <a href="orders.html" class="as-link"><i class="fas fa-receipt"></i> <span>Orders</span></a>
+      <a href="products.html" class="as-link active"><i class="fas fa-burger"></i> <span>Products</span></a>
+      <a href="bookings.html" class="as-link"><i class="fas fa-calendar-check"></i> <span>Bookings</span></a>
+      <a href="customers.html" class="as-link"><i class="fas fa-users"></i> <span>Customers</span></a>
+      <a href="manageUsers.html" class="as-link" id="navManageUsers" style="display:none"><i class="fas fa-user-shield"></i> <span>Manage Users</span></a>
+    </nav>
+    <div class="as-foot">
+      <div class="as-user" id="asUser"></div>
+      <button class="as-logout" onclick="adminLogout()"><i class="fas fa-sign-out-alt"></i> <span>Log Out</span></button>
+      <a class="as-back" href="../index.html"><i class="fas fa-arrow-left"></i> <span>Back to site</span></a>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+    <header class="admin-topbar">
+      <div>
+        <h1>Products</h1>
+        <p>Manage the menu shown on the storefront</p>
+      </div>
+    </header>
+    <div class="admin-content">
+      <div class="content-head">
+        <span></span>
+        <button class="btn-admin" onclick="openProductForm(null)"><i class="fas fa-plus"></i> Add Product</button>
+      </div>
+
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr><th>Image</th><th>Name</th><th>Category</th><th>Price</th><th>Status</th><th>Actions</th></tr>
+          </thead>
+          <tbody id="productsTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- PRODUCT FORM MODAL -->
+<div class="ov" id="productOv">
+  <div class="ov-box">
+    <div class="ov-hdr">
+      <h2 id="pfTitle">Add Product</h2>
+      <button class="ov-close" onclick="closeProductForm()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="ov-body">
+      <div class="f-row2">
+        <div class="fg"><label>Name <span style="color:#e53935">*</span></label><input id="pfName" type="text" placeholder="Beef Burger"/></div>
+        <div class="fg">
+          <label>Category <span style="color:#e53935">*</span></label>
+          <select id="pfCategory">
+            <option value="burgers">Burgers</option>
+            <option value="sandwiches">Sandwiches</option>
+            <option value="shawarmas">Shawarmas & Wraps</option>
+            <option value="quesadillas">Quesadillas</option>
+            <option value="tacos">Tacos</option>
+            <option value="crepes">Crepes & Pancakes</option>
+          </select>
+        </div>
+      </div>
+      <div class="f-row2">
+        <div class="fg"><label>Emoji</label><input id="pfEmoji" type="text" placeholder="🍔"/></div>
+        <div class="fg"><label>Price (FRW) <span style="color:#e53935">*</span></label><input id="pfPrice" type="number" placeholder="3500"/></div>
+      </div>
+      <div class="fg">
+        <label>Product Image</label>
+        <div class="img-mode-tabs">
+          <button type="button" class="img-mode-tab active" data-mode="url" onclick="setImageMode('url')">🔗 Image URL</button>
+          <button type="button" class="img-mode-tab" data-mode="upload" onclick="setImageMode('upload')">⬆️ Upload Image</button>
+        </div>
+        <div id="pfImageUrlWrap">
+          <input id="pfImage" type="text" placeholder="https://…" oninput="updatePreview(this.value)"/>
+        </div>
+        <div id="pfImageFileWrap" class="file-drop" style="display:none">
+          <input id="pfImageFile" type="file" accept="image/*" onchange="previewSelectedFile(this)"/>
+        </div>
+        <div class="pf-preview-wrap" id="pfPreviewWrap">
+          <img class="pf-preview" id="pfPreview" alt="Preview"/>
+        </div>
+      </div>
+      <div class="f-row2">
+        <div class="fg"><label>Portion / Weight</label><input id="pfWeight" type="text" placeholder="1 serving"/></div>
+        <div class="fg"><label>Calories</label><input id="pfCalories" type="number" placeholder="520"/></div>
+      </div>
+      <div class="f-row3">
+        <div class="fg"><label>Protein</label><input id="pfProtein" type="text" placeholder="28g"/></div>
+        <div class="fg"><label>Fat</label><input id="pfFat" type="text" placeholder="28g"/></div>
+        <div class="fg"><label>Carbs</label><input id="pfCarbs" type="text" placeholder="42g"/></div>
+      </div>
+      <div class="f-row2">
+        <div class="fg"><label>Rating</label><input id="pfRating" type="number" step="0.1" min="0" max="5" placeholder="4.9"/></div>
+        <div class="fg"><label>Sold count</label><input id="pfSold" type="number" placeholder="680"/></div>
+      </div>
+      <div class="fg"><label>Description</label><textarea id="pfDesc" rows="3" placeholder="Short product description…"></textarea></div>
+      <div class="fg-check"><input id="pfActive" type="checkbox" checked/><label style="margin:0" for="pfActive">Active (visible on storefront)</label></div>
+
+      <div class="ov-actions">
+        <button class="btn-admin ghost" onclick="closeProductForm()"><i class="fas fa-times"></i> Cancel</button>
+        <button class="btn-admin" onclick="saveProduct()"><i class="fas fa-check"></i> Save Product</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span id="toastMsg"></span></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../supabaseClient.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>

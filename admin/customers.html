@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Customers – Admin – Avec la Chef</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Bebas+Neue:wght@400&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/all.min.css"/>
+<link rel="stylesheet" href="admin.css"/>
+</head>
+<body>
+
+<div class="admin-wrap">
+  <aside class="admin-sidebar">
+    <div class="as-logo">
+      <div class="emoji">🍔</div>
+      <div class="as-logo-txt"><strong>Avec la Chef</strong><small>Admin</small></div>
+    </div>
+    <nav class="as-nav">
+      <a href="dashboard.html" class="as-link"><i class="fas fa-gauge-high"></i> <span>Dashboard</span></a>
+      <a href="orders.html" class="as-link"><i class="fas fa-receipt"></i> <span>Orders</span></a>
+      <a href="products.html" class="as-link"><i class="fas fa-burger"></i> <span>Products</span></a>
+      <a href="bookings.html" class="as-link"><i class="fas fa-calendar-check"></i> <span>Bookings</span></a>
+      <a href="customers.html" class="as-link active"><i class="fas fa-users"></i> <span>Customers</span></a>
+      <a href="manageUsers.html" class="as-link" id="navManageUsers" style="display:none"><i class="fas fa-user-shield"></i> <span>Manage Users</span></a>
+    </nav>
+    <div class="as-foot">
+      <div class="as-user" id="asUser"></div>
+      <button class="as-logout" onclick="adminLogout()"><i class="fas fa-sign-out-alt"></i> <span>Log Out</span></button>
+      <a class="as-back" href="../index.html"><i class="fas fa-arrow-left"></i> <span>Back to site</span></a>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+    <header class="admin-topbar">
+      <div>
+        <h1>Customers</h1>
+        <p>Registered accounts and their order history</p>
+      </div>
+    </header>
+    <div class="admin-content">
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr><th>Name</th><th>Email</th><th>Phone</th><th>Address</th><th>Orders</th><th>Role</th></tr>
+          </thead>
+          <tbody id="customersTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="toast" id="toast"><span id="toastMsg"></span></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../supabaseClient.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>

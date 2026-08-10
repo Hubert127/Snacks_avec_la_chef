@@ -24,6 +24,14 @@
       <button class="btn-signin btn-signin-orange" id="signinBtn" onclick="openAuth()">
         <i class="fas fa-user"></i> Sign In
       </button>
+      <div class="notif-bell" id="notifBell" onclick="toggleNotifs(event)">
+        <i class="fas fa-bell"></i>
+        <span class="notif-badge" id="notifBadge">0</span>
+        <div class="notif-dropdown" id="notifDropdown" onclick="event.stopPropagation()">
+          <div class="notif-hdr">Notifications</div>
+          <div id="notifList"></div>
+        </div>
+      </div>
       <div class="user-pill" id="userPill" onclick="toggleUserMenu()">
         <div class="u-avatar" id="uAvatar"></div>
         <span id="uName"></span>
@@ -42,6 +50,7 @@
           <button class="ud-item" onclick="closeUserMenu()"><i class="fas fa-box"></i> My Orders</button>
           <button class="ud-item" onclick="closeUserMenu()"><i class="fas fa-heart"></i> Wishlist</button>
           <button class="ud-item" onclick="closeUserMenu()"><i class="fas fa-map-marker-alt"></i> Addresses</button>
+          <button class="ud-item" id="udAdminLink" onclick="window.location.href='admin/dashboard.html'" style="display:none"><i class="fas fa-gauge-high"></i> Admin Dashboard</button>
           <div class="ud-divider"></div>
           <button class="ud-item ud-logout" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</button>
         </div>
@@ -209,7 +218,7 @@
 </div>
 
 <!-- ══ SIGN IN MODAL ══ -->
-<div class="overlay" id="authOv">
+<div class="overlay" id="authOv" onclick="if(event.target===this) closeOv('authOv')">
   <div class="auth-box" style="position:relative">
     <div class="auth-top">
       <button class="auth-top-close" onclick="closeOv('authOv')"><i class="fas fa-times"></i></button>
@@ -233,10 +242,9 @@
         </div>
         <div class="fg">
           <label>Password <span>*</span></label>
-          <div class="inp-wrap">
-            <i class="fas fa-lock i-icon"></i>
-            <input class="inp ic" id="lPass" type="password" placeholder="Enter your password" style="padding-right:40px"/>
-            <button class="inp-toggle" onclick="togPwd('lPass',this)"><i class="fas fa-eye"></i></button>
+          <div class="pw-wrap">
+            <input class="inp" id="lPass" type="password" placeholder="Enter your password"/>
+            <button type="button" class="pw-eye" onclick="togPwd('lPass',this)"><i class="fas fa-eye"></i></button>
           </div>
         </div>
         <div style="text-align:right;margin-bottom:14px"><a href="#" style="font-size:.78rem;color:var(--green);font-weight:700">Forgot password?</a></div>
@@ -272,10 +280,9 @@
         </div>
         <div class="fg">
           <label>Password <span>*</span></label>
-          <div class="inp-wrap">
-            <i class="fas fa-lock i-icon"></i>
-            <input class="inp ic" id="rPass" type="password" placeholder="Min 8 characters" style="padding-right:40px"/>
-            <button class="inp-toggle" onclick="togPwd('rPass',this)"><i class="fas fa-eye"></i></button>
+          <div class="pw-wrap">
+            <input class="inp" id="rPass" type="password" placeholder="Min 8 characters"/>
+            <button type="button" class="pw-eye" onclick="togPwd('rPass',this)"><i class="fas fa-eye"></i></button>
           </div>
         </div>
         <div class="fg"><label>Delivery Address <span>*</span></label><input class="inp" id="rAddr" type="text" placeholder="KG 5 Ave, Kicukiro Sector"/></div>
@@ -287,7 +294,7 @@
 </div>
 
 <!-- ══ PRODUCT DETAIL MODAL ══ -->
-<div class="overlay" id="pdOv">
+<div class="overlay" id="pdOv" onclick="if(event.target===this) closeOv('pdOv')">
   <div class="pd-box" id="pdContent"></div>
 </div>
 
@@ -311,6 +318,8 @@
 <!-- TOAST -->
 <div class="toast" id="toast"><span id="toastMsg"></span></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabaseClient.js"></script>
 <script src="script.js"></script>
 </body>
 </html>

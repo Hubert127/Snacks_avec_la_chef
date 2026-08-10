@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Admin Login – Avec la Chef</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Bebas+Neue:wght@400&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/all.min.css"/>
+<link rel="stylesheet" href="admin.css"/>
+</head>
+<body id="loginPage">
+
+<div class="login-wrap">
+  <div class="login-box">
+    <div class="ll-icon">🍔</div>
+    <h1>Avec la Chef ADMIN PANEL</h1>
+    <p>Sign in with authorized credentials</p>
+
+    <div class="fg">
+      <label>Email</label>
+      <input class="inp" id="laEmail" type="email" placeholder="youremail@gmail.com"/>
+    </div>
+    <div class="fg">
+      <label>Password</label>
+      <div class="pw-wrap">
+        <input class="inp" id="laPass" type="password" placeholder="Enter your password"/>
+        <button type="button" class="pw-toggle" onclick="togPwdAdmin('laPass', this)"><i class="fas fa-eye"></i></button>
+      </div>
+    </div>
+    <button class="btn-login" onclick="adminLogin()"><i class="fas fa-sign-in-alt"></i> Sign In</button>
+    <a class="login-back" href="../index.html"><i class="fas fa-arrow-left"></i> Back to the site</a>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span id="toastMsg"></span></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../supabaseClient.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>

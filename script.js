@@ -1,13 +1,14 @@
 /* ═══════════════════════════════════════════════
    SNACKS BY SNACKS — avec la chef
    script.js  |  Fresh Food. Bold Taste.
+   Data layer: Supabase (see supabaseClient.js)
 ═══════════════════════════════════════════════ */
 
 /* ─── CONSTANTS ───────────────────────────── */
 const MOMO_CODE = '736568';
 const DELIVERY  = 500;
 
-/* ─── DATA ────────────────────────────────── */
+/* ─── CATEGORY LABELS (display only — actual items come from Supabase) ── */
 const CATS = [
   {id:'all',         emoji:'🔥', label:'All Items'},
   {id:'burgers',     emoji:'🍔', label:'Burgers'},
@@ -18,165 +19,8 @@ const CATS = [
   {id:'crepes',      emoji:'🥞', label:'Crepes & Pancakes'},
 ];
 
-const PRODUCTS = [
-  /* ── BURGERS  3,500 FRW ── */
-  {
-    id:1, name:'Beef Burger', cat:'burgers', emoji:'🍔',
-    img:'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&h=380&fit=crop&auto=format',
-    price:3500, weight:'1 serving',
-    cal:520, prot:'28g', fat:'28g', carb:'42g',
-    rating:4.9, sold:680,
-    desc:'Juicy beef patty grilled to perfection, layered with crisp lettuce, fresh tomato, pickles, and our bold signature sauce on a toasted sesame bun. A true classic.'
-  },
-  {
-    id:2, name:'Chicken Burger', cat:'burgers', emoji:'🍔',
-    img:'https://images.unsplash.com/photo-1553979459-d2229ba7433b?w=500&h=380&fit=crop&auto=format',
-    price:3500, weight:'1 serving',
-    cal:480, prot:'32g', fat:'22g', carb:'40g',
-    rating:4.8, sold:590,
-    desc:'Tender grilled chicken fillet with a golden crispy coating, fresh coleslaw, and spicy sriracha mayo on a brioche bun. Bold flavour in every bite.'
-  },
-  {
-    id:3, name:'Fish Burger', cat:'burgers', emoji:'🍔',
-    img:'https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=500&h=380&fit=crop&auto=format',
-    price:3500, weight:'1 serving',
-    cal:450, prot:'25g', fat:'20g', carb:'44g',
-    rating:4.7, sold:340,
-    desc:'Crispy battered fish fillet with fresh lettuce, homemade tartare sauce, and a squeeze of lemon on a soft bun. Light, flavorful and incredibly satisfying.'
-  },
-
-  /* ── SANDWICHES  3,500 FRW ── */
-  {
-    id:4, name:'Beef Sandwich', cat:'sandwiches', emoji:'🥪',
-    img:'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=500&h=380&fit=crop&auto=format',
-    price:3500, weight:'1 serving',
-    cal:490, prot:'30g', fat:'24g', carb:'38g',
-    rating:4.8, sold:460,
-    desc:'Sliced seasoned beef with caramelized onions, melted cheese, and fresh greens packed in toasted artisan bread. Rich, hearty and deeply satisfying.'
-  },
-  {
-    id:5, name:'Chicken Sandwich', cat:'sandwiches', emoji:'🥪',
-    img:'https://images.unsplash.com/photo-1619096252214-ef06c45683e3?w=500&h=380&fit=crop&auto=format',
-    price:3500, weight:'1 serving',
-    cal:430, prot:'28g', fat:'18g', carb:'40g',
-    rating:4.7, sold:510,
-    desc:'Grilled chicken strips with avocado, tomato, crisp lettuce, and honey mustard pressed in warm toasted bread. Fresh, clean and full of flavour.'
-  },
-  {
-    id:6, name:'Fish Sandwich', cat:'sandwiches', emoji:'🥪',
-    img:'https://images.unsplash.com/photo-1485704686097-ed47f7263ca4?w=500&h=380&fit=crop&auto=format',
-    price:3500, weight:'1 serving',
-    cal:410, prot:'24g', fat:'16g', carb:'42g',
-    rating:4.6, sold:280,
-    desc:'Flaky seasoned fish with fresh cucumber, ripe tomato, and a creamy dill sauce tucked in soft toasted bread. A lighter and refreshing sandwich option.'
-  },
-
-  /* ── SHAWARMAS & WRAPS  3,500 FRW ── */
-  {
-    id:7, name:'Beef Shawarma', cat:'shawarmas', emoji:'🌯',
-    img:'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=500&h=380&fit=crop&auto=format',
-    price:3500, weight:'1 serving',
-    cal:550, prot:'32g', fat:'26g', carb:'48g',
-    rating:4.9, sold:720,
-    desc:'Marinated slow-cooked beef strips with garlic sauce, pickled veggies, and fresh tomatoes wrapped in warm flatbread. Authentic bold Middle Eastern flavours.'
-  },
-  {
-    id:8, name:'Chicken Shawarma', cat:'shawarmas', emoji:'🌯',
-    img:'https://images.unsplash.com/photo-1561651823-34feb02250e4?w=500&h=380&fit=crop&auto=format',
-    price:3500, weight:'1 serving',
-    cal:500, prot:'35g', fat:'20g', carb:'46g',
-    rating:4.9, sold:850,
-    desc:'Tender spiced chicken with hummus, tabbouleh, pickled turnips, and garlic sauce in a warm toasted wrap. Our all-time best-seller — always fresh.'
-  },
-  {
-    id:9, name:'Fish Wrap', cat:'shawarmas', emoji:'🌯',
-    img:'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&h=380&fit=crop&auto=format',
-    price:3500, weight:'1 serving',
-    cal:420, prot:'26g', fat:'14g', carb:'46g',
-    rating:4.6, sold:310,
-    desc:'Lightly seasoned grilled fish with fresh veggies, shredded cabbage, lemon herb sauce and a hint of chili wrapped in a soft warm tortilla. Clean and delicious.'
-  },
-
-  /* ── QUESADILLAS  4,000 FRW ── */
-  {
-    id:10, name:'Beef Quesadilla', cat:'quesadillas', emoji:'🫓',
-    img:'https://images.unsplash.com/photo-1618040996337-56904b7850b9?w=500&h=380&fit=crop&auto=format',
-    price:4000, weight:'1 serving',
-    cal:580, prot:'30g', fat:'30g', carb:'50g',
-    rating:4.8, sold:390,
-    desc:'Crispy golden tortilla packed with seasoned beef, melted stretchy cheese, jalapeños and sour cream. Grilled until perfectly crunchy outside and gooey inside.'
-  },
-  {
-    id:11, name:'Chicken Quesadilla', cat:'quesadillas', emoji:'🫓',
-    img:'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=500&h=380&fit=crop&auto=format',
-    price:4000, weight:'1 serving',
-    cal:540, prot:'34g', fat:'26g', carb:'48g',
-    rating:4.9, sold:460,
-    desc:'Golden crispy tortilla filled with grilled chicken, stretchy mozzarella, roasted peppers and smoky chipotle sauce. A flavour explosion in every single bite.'
-  },
-  {
-    id:12, name:'Fish Quesadilla', cat:'quesadillas', emoji:'🫓',
-    img:'https://images.unsplash.com/photo-1600891964092-4316c288032e?w=500&h=380&fit=crop&auto=format',
-    price:4000, weight:'1 serving',
-    cal:490, prot:'28g', fat:'22g', carb:'48g',
-    rating:4.6, sold:240,
-    desc:'Crispy tortilla with flaked seasoned fish, melted cheese, caramelized onions and a squeeze of fresh lime. Light yet incredibly flavourful and satisfying.'
-  },
-
-  /* ── TACOS  4,000 FRW ── */
-  {
-    id:13, name:'Beef Tacos', cat:'tacos', emoji:'🌮',
-    img:'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=500&h=380&fit=crop&auto=format',
-    price:4000, weight:'2 pieces',
-    cal:520, prot:'28g', fat:'24g', carb:'46g',
-    rating:4.9, sold:610,
-    desc:'Two soft corn tacos loaded with spiced minced beef, fresh pico de gallo, cilantro, shredded cheese, and a drizzle of hot sauce. Absolute taco heaven.'
-  },
-  {
-    id:14, name:'Chicken Tacos', cat:'tacos', emoji:'🌮',
-    img:'https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?w=500&h=380&fit=crop&auto=format',
-    price:4000, weight:'2 pieces',
-    cal:480, prot:'32g', fat:'18g', carb:'44g',
-    rating:4.8, sold:540,
-    desc:'Two soft tacos filled with grilled spiced chicken, charred corn, fresh avocado, lime slaw, and salsa verde. A fiesta of fresh, bold and vibrant flavours.'
-  },
-  {
-    id:15, name:'Fish Tacos', cat:'tacos', emoji:'🌮',
-    img:'https://images.unsplash.com/photo-1611250188496-e966043a0629?w=500&h=380&fit=crop&auto=format',
-    price:4000, weight:'2 pieces',
-    cal:430, prot:'26g', fat:'16g', carb:'46g',
-    rating:4.7, sold:360,
-    desc:'Two crispy battered fish tacos with mango salsa, pickled cabbage, chipotle crema and fresh jalapeños in warm soft tortillas. A true coastal flavour experience.'
-  },
-
-  /* ── CREPES & PANCAKES ── */
-  {
-    id:16, name:'Pancakes', cat:'crepes', emoji:'🥞',
-    img:'https://images.unsplash.com/photo-1528207776546-365bb710ee93?w=500&h=380&fit=crop&auto=format',
-    price:1000, weight:'1 serving',
-    cal:350, prot:'8g', fat:'12g', carb:'52g',
-    rating:4.7, sold:420,
-    desc:'Fluffy golden pancakes stacked high and drizzled with maple syrup, topped with fresh fruits and a dusting of powdered sugar. The ultimate sweet treat any time.'
-  },
-  {
-    id:17, name:'Crepes', cat:'crepes', emoji:'🥞',
-    img:'https://images.unsplash.com/photo-1519676867240-f03562e64548?w=500&h=380&fit=crop&auto=format',
-    price:700, weight:'1 serving',
-    cal:280, prot:'6g', fat:'10g', carb:'42g',
-    rating:4.6, sold:380,
-    desc:'Thin, delicate French-style crepes served with a choice of sweet or savoury fillings. Light, elegant and made completely fresh to order.'
-  },
-  {
-    id:18, name:'Fries', cat:'crepes', emoji:'🍟',
-    img:'https://images.unsplash.com/photo-1573080496219-bb964701c394?w=500&h=380&fit=crop&auto=format',
-    price:1000, weight:'1 serving',
-    cal:312, prot:'4g', fat:'15g', carb:'40g',
-    rating:4.8, sold:920,
-    desc:'Crispy golden fries seasoned with our special spice blend, perfectly salted and fried to a beautiful golden crunch. The ultimate side dish or standalone snack.'
-  },
-];
-
 /* ─── STATE ───────────────────────────────── */
+let PRODUCTS    = [];
 let cart        = [];
 let activeCat   = 'all';
 let searchQ     = '';
@@ -185,8 +29,24 @@ let payStep     = 1;
 let pdQty       = 1;
 let pdId        = null;
 let selMethod   = 'ussd';
+let checkoutDetails = {}; // survives across payment-step re-renders (each step replaces the DOM)
 
-/* ─── LOCALSTORAGE ────────────────────────── */
+/* ─── PRODUCTS (from Supabase) ────────────── */
+function mapProduct(row){
+  return {
+    id: row.id, name: row.name, cat: row.category, emoji: row.emoji || '🍽️',
+    img: row.image_url, price: row.price, weight: row.weight,
+    cal: row.calories, prot: row.protein, fat: row.fat, carb: row.carbs,
+    rating: row.rating, sold: row.sold, desc: row.description
+  };
+}
+async function loadProducts(){
+  const {data, error} = await sb.from('products').select('*').eq('active', true).order('id');
+  if(error){ console.error(error); PRODUCTS = []; return; }
+  PRODUCTS = data.map(mapProduct);
+}
+
+/* ─── LOCALSTORAGE (cart only) ────────────── */
 function saveCart(){
   try{ localStorage.setItem('snacks_by_snacks_cart', JSON.stringify(cart)); }catch(e){}
 }
@@ -218,19 +78,32 @@ function viewChef(chefId){
   // In a real app, this would navigate to chef detail page
 }
 
-function submitBooking(){
-  const serviceType = document.getElementById('serviceType')?.value;
-  const eventDate = document.getElementById('eventDate')?.value;
-  const guestCount = document.getElementById('guestCount')?.value;
-  const eventLocation = document.getElementById('eventLocation')?.value;
-  
+async function submitBooking(){
+  const serviceType         = document.getElementById('serviceType')?.value;
+  const eventDate           = document.getElementById('eventDate')?.value;
+  const guestCount          = document.getElementById('guestCount')?.value;
+  const preferredChef       = document.getElementById('preferredChef')?.value || null;
+  const eventLocation       = document.getElementById('eventLocation')?.value;
+  const specialRequirements = document.getElementById('specialRequirements')?.value || null;
+
   if(!serviceType || !eventDate || !guestCount || !eventLocation){
     toast('⚠️ Please fill all required fields', '');
     return;
   }
-  
+
+  const { error } = await sb.from('bookings').insert({
+    user_id: currentUser?.id || null,
+    service_type: serviceType,
+    event_date: eventDate,
+    guest_count: parseInt(guestCount, 10),
+    preferred_chef: preferredChef,
+    event_location: eventLocation,
+    special_requirements: specialRequirements
+  });
+
+  if(error){ toast('⚠️ Could not submit booking: ' + error.message, ''); return; }
+
   toast('✅ Booking request submitted! We\'ll contact you soon.', 'g');
-  // Reset form
   document.getElementById('serviceType').value = '';
   document.getElementById('eventDate').value = '';
   document.getElementById('guestCount').value = '';
@@ -245,8 +118,11 @@ function toggleBookings(){
 }
 
 /* ─── INIT ──────────────────────────────── */
-document.addEventListener('DOMContentLoaded',()=>{
+document.addEventListener('DOMContentLoaded', async () => {
+  await loadProducts();
+  await restoreSession();
   loadCart();
+
   // Always build hero slides on index.html
   if(document.getElementById('row1')){
     buildHeroSlides();
@@ -262,11 +138,14 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.addEventListener('click', e => {
     const pill = document.getElementById('userPill');
     if(pill && !pill.contains(e.target)) closeUserMenu();
+    const bell = document.getElementById('notifBell');
+    if(bell && !bell.contains(e.target)) document.getElementById('notifDropdown')?.classList.remove('open');
   });
 });
 
 /* ─── HERO SLIDES ─────────────────────────── */
 function buildHeroSlides(){
+  if(!PRODUCTS.length) return;
   const half  = Math.ceil(PRODUCTS.length / 2);
   const imgs1 = PRODUCTS.slice(0, half).map(p => p.img);
   const imgs2 = PRODUCTS.slice(half).map(p => p.img);
@@ -495,7 +374,7 @@ function setStep(n){
       'step-item' + (i < n ? ' done' : i === n ? ' active' : '');
   });
 }
-function renderPayStep(step){
+function renderPayStep(step, orderCode){
   const body = document.getElementById('payBody');
   const {sub, total} = totals();
 
@@ -521,25 +400,30 @@ function renderPayStep(step){
       <div class="fg2">
         <label>Full Name <span>*</span></label>
         <input class="inp" id="pName" type="text" placeholder="Jean Paul Mugisha"
-          value="${currentUser?.name || ''}"/>
+          value="${checkoutDetails.name || currentUser?.name || ''}"/>
       </div>
       <div class="fg2">
         <label>Delivery Address <span>*</span></label>
         <input class="inp" id="pAddr" type="text" placeholder="KG 5 Ave, Kicukiro Sector"
-          value="${currentUser?.address || ''}"/>
+          value="${checkoutDetails.addr || currentUser?.address || ''}"/>
+      </div>
+      <div class="fg2">
+        <label>Email <span>*</span></label>
+        <input class="inp" id="pEmail" type="email" placeholder="you@email.com"
+          value="${checkoutDetails.email || currentUser?.email || ''}"/>
       </div>
       <div class="fg2">
         <label>MTN MoMo Number <span>*</span></label>
         <div class="inp-wrap">
           <span class="inp-pre">+250</span>
           <input class="inp pr" id="pPhone" type="tel" maxlength="9" placeholder="078xxxxxxx"
-            value="${currentUser?.phone || ''}"
+            value="${checkoutDetails.phone || currentUser?.phone || ''}"
             oninput="this.value=this.value.replace(/\\D/g,'')"/>
         </div>
       </div>
       <div class="fg2">
         <label>Order Note <span style="color:#666;font-weight:500">(optional)</span></label>
-        <input class="inp" id="pNote" type="text" placeholder="e.g. No onions, extra spicy"/>
+        <input class="inp" id="pNote" type="text" placeholder="e.g. No onions, extra spicy" value="${checkoutDetails.note || ''}"/>
       </div>
       <div style="display:flex;gap:9px;margin-top:16px">
         <button class="btn-back" onclick="goPay(1)">← Back</button>
@@ -592,7 +476,17 @@ function renderPayStep(step){
           🔑 <strong>Step 3:</strong> Enter your 4-digit MoMo PIN to confirm<br/>
           📩 <strong>Step 4:</strong> You'll receive an SMS payment confirmation
         </div>
-        <div class="ussd-tip">⚠️ Ensure your MTN line has sufficient MoMo balance. Your order is confirmed automatically after successful payment.</div>
+        <div class="ussd-tip">⚠️ Ensure your MTN line has sufficient MoMo balance. Your order will be confirmed once we verify your payment screenshot below.</div>
+      </div>
+
+      <div class="proof-upload">
+        <label>Upload MoMo Payment Screenshot <span style="color:var(--fire)">*</span></label>
+        <div class="proof-drop">
+          <input id="pProof" type="file" accept="image/*" onchange="previewProof(this)"/>
+        </div>
+        <div class="proof-preview-wrap" id="proofPreviewWrap">
+          <img class="proof-preview" id="proofPreview" alt="Payment screenshot preview"/>
+        </div>
       </div>
 
       <div style="display:flex;gap:9px;margin-top:14px">
@@ -620,28 +514,28 @@ function renderPayStep(step){
   }
 
   else if(step === 'done'){
-    const name    = document.getElementById('pName')?.value?.trim() || 'Customer';
-    const addr    = document.getElementById('pAddr')?.value?.trim() || 'Kicukiro';
-    const orderId = 'SBS-' + Date.now().toString(36).toUpperCase();
+    const name = checkoutDetails.name || 'Customer';
+    const addr = checkoutDetails.addr || 'Kicukiro';
+    const orderId = orderCode || ('SBS-' + Date.now().toString(36).toUpperCase());
     body.innerHTML = `
       <div class="succ-wrap">
         <div class="succ-icon">🔥</div>
-        <h2>Order Confirmed!</h2>
-        <p>MTN MoMo payment received. Thank you, <strong>${name.split(' ')[0]}</strong>!</p>
+        <h2>Order Received!</h2>
+        <p>Thank you, <strong>${name.split(' ')[0]}</strong>! We're verifying your MoMo payment screenshot.</p>
         <div class="order-chip">📦 ${orderId}</div>
-        <p>SMS confirmation sent to your MoMo number.<br/>Delivering to: <strong>${addr}</strong></p>
+        <p>You'll get a notification (and an email) as soon as it's confirmed.<br/>Delivering to: <strong>${addr}</strong></p>
         <div class="tl">
           <div class="tl-item">
-            <div class="tl-dot" style="background:rgba(240,165,0,.12);color:#f0a500">✅</div>
-            <div class="tl-inf"><h5>Payment Received</h5><p>MoMo code <strong>${MOMO_CODE}</strong> confirmed</p></div>
+            <div class="tl-dot" style="background:rgba(240,165,0,.12);color:#f0a500">📸</div>
+            <div class="tl-inf"><h5>Screenshot Received</h5><p>Our team is verifying your MoMo payment</p></div>
           </div>
           <div class="tl-item">
             <div class="tl-dot" style="background:rgba(230,60,30,.12);color:#e63c1e">🍳</div>
-            <div class="tl-inf"><h5>Order Being Prepared</h5><p>The chef is making your food fresh right now</p></div>
+            <div class="tl-inf"><h5>Order Prepared After Confirmation</h5><p>The chef starts once payment is verified</p></div>
           </div>
           <div class="tl-item">
             <div class="tl-dot" style="background:rgba(255,203,5,.1);color:#ffcb05">🚚</div>
-            <div class="tl-inf"><h5>Estimated Delivery</h5><p>30–45 minutes to your address (Lunch: 12PM–2PM)</p></div>
+            <div class="tl-inf"><h5>Estimated Delivery</h5><p>30–45 minutes after confirmation (Lunch: 12PM–2PM)</p></div>
           </div>
         </div>
         <button class="btn-cont" onclick="closeOv('payOv');resetCart()">Continue Ordering 🔥</button>
@@ -652,12 +546,17 @@ function renderPayStep(step){
 
 function goPay(n){
   if(n === 3){
-    const name = document.getElementById('pName')?.value?.trim();
-    const addr = document.getElementById('pAddr')?.value?.trim();
-    const ph   = document.getElementById('pPhone')?.value?.trim();
+    const name  = document.getElementById('pName')?.value?.trim();
+    const addr  = document.getElementById('pAddr')?.value?.trim();
+    const email = document.getElementById('pEmail')?.value?.trim();
+    const ph    = document.getElementById('pPhone')?.value?.trim();
+    const note  = document.getElementById('pNote')?.value?.trim() || null;
     if(!name){ toast('⚠️ Enter your name', ''); return; }
     if(!addr){ toast('⚠️ Enter delivery address', ''); return; }
+    if(!email || !email.includes('@')){ toast('⚠️ Enter a valid email (used for order updates)', ''); return; }
     if(!ph || ph.length < 9){ toast('⚠️ Enter valid 9-digit MoMo number', ''); return; }
+    // save before this DOM gets replaced by step 3's markup
+    checkoutDetails = {name, addr, email, phone: ph, note};
   }
   payStep = n; setStep(n); renderPayStep(n);
   document.querySelector('.pay-box').scrollTop = 0;
@@ -675,14 +574,78 @@ function copyUSSD(){
   el.textContent = '✅ Copied!';
   setTimeout(() => el.textContent = '', 2400);
 }
-function doPayment(){
+
+function previewProof(input){
+  const file = input.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    document.getElementById('proofPreview').src = e.target.result;
+    document.getElementById('proofPreviewWrap').classList.add('show');
+  };
+  reader.readAsDataURL(file);
+}
+
+async function placeOrder({name, addr, email, phone, note, proofFile}){
+  const {sub, total} = totals();
+  const orderCode = 'SBS-' + Date.now().toString(36).toUpperCase();
+
+  const ext  = proofFile.name.split('.').pop();
+  const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+  const { error: uploadError } = await sb.storage.from('payment-proofs').upload(path, proofFile);
+  if(uploadError) return { error: 'Could not upload screenshot: ' + uploadError.message };
+
+  const { data: order, error } = await sb.from('orders').insert({
+    order_code: orderCode,
+    user_id: currentUser?.id || null,
+    customer_name: name,
+    email,
+    phone: '250' + phone,
+    address: addr,
+    note,
+    subtotal: sub,
+    delivery_fee: DELIVERY,
+    total,
+    payment_method: selMethod,
+    payment_proof_path: path
+  }).select().single();
+
+  if(error) return { error: error.message };
+
+  const items = cart.map(it => ({ order_id: order.id, product_id: it.id, name: it.name, price: it.price, qty: it.qty }));
+  const { error: itemsError } = await sb.from('order_items').insert(items);
+  if(itemsError) console.error(itemsError);
+
+  return { orderCode };
+}
+
+async function doPayment(){
+  // read the file BEFORE switching views — renderPayStep('proc') replaces
+  // the whole form's HTML, so #pProof won't exist afterward. name/addr/
+  // email/phone/note were already captured in goPay(3) into checkoutDetails,
+  // since step 2's fields are long gone by the time we're on step 3.
+  const proofFile = document.getElementById('pProof')?.files?.[0];
+  if(!proofFile){ toast('⚠️ Please upload your MoMo payment screenshot', ''); return; }
+
   const btn = document.getElementById('payBtn');
   if(btn) btn.disabled = true;
   renderPayStep('proc');
-  setTimeout(() => renderPayStep('done'), 3800);
+
+  const [result] = await Promise.all([
+    placeOrder({...checkoutDetails, proofFile}),
+    new Promise(r => setTimeout(r, 1800))
+  ]);
+
+  if(result.error){
+    toast('⚠️ Could not place order: ' + result.error, '');
+    renderPayStep(3);
+    return;
+  }
+  renderPayStep('done', result.orderCode);
 }
 function resetCart(){
   cart = [];
+  checkoutDetails = {};
   saveCart();
   updateCartUI();
 }
@@ -701,14 +664,18 @@ function togPwd(id, btn){
   el.type    = show ? 'password' : 'text';
   btn.innerHTML = show ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
 }
-function doLogin(){
+async function doLogin(){
   const email = document.getElementById('lEmail').value.trim();
   const pass  = document.getElementById('lPass').value.trim();
   if(!email || !pass){ toast('⚠️ Fill in all fields', ''); return; }
-  currentUser = {name:'Jean Mugisha', email, phone:'0781234567', address:'KG 5 Ave, Kicukiro'};
-  applyUser(); closeOv('authOv'); toast('🔥 Welcome back!', 'g');
+
+  const { error } = await sb.auth.signInWithPassword({ email, password: pass });
+  if(error){ toast('⚠️ ' + error.message, ''); return; }
+
+  await restoreSession();
+  closeOv('authOv'); toast('🔥 Welcome back!', 'g');
 }
-function doRegister(){
+async function doRegister(){
   const f  = document.getElementById('rFirst').value.trim();
   const l  = document.getElementById('rLast').value.trim();
   const e  = document.getElementById('rEmail').value.trim();
@@ -717,12 +684,40 @@ function doRegister(){
   const a  = document.getElementById('rAddr').value.trim();
   if(!f || !l || !e || !ph || !pw || !a){ toast('⚠️ Fill in all required fields', ''); return; }
   if(ph.length < 9){ toast('⚠️ Enter valid 9-digit phone number', ''); return; }
-  currentUser = {name:`${f} ${l}`, email:e, phone:ph, address:a};
-  applyUser(); closeOv('authOv'); toast(`🎉 Welcome, ${f}! Account created.`, 'g');
+
+  const { data, error } = await sb.auth.signUp({
+    email: e, password: pw,
+    options: { data: { full_name: `${f} ${l}`, phone: ph, address: a } }
+  });
+  if(error){ toast('⚠️ ' + error.message, ''); return; }
+
+  if(data.session){
+    await restoreSession();
+    closeOv('authOv'); toast(`🎉 Welcome, ${f}! Account created.`, 'g');
+  } else {
+    closeOv('authOv');
+    toast('📧 Check your email to confirm your account, then sign in', 'g');
+  }
 }
 function socialLogin(p){
-  currentUser = {name:`${p} User`, email:'user@example.com', phone:'', address:''};
-  applyUser(); closeOv('authOv'); toast(`✅ Signed in with ${p}`, 'g');
+  toast(`⚠️ ${p} sign-in isn't set up yet`, '');
+}
+async function restoreSession(){
+  const { data: { session } } = await sb.auth.getSession();
+  if(!session){ currentUser = null; return; }
+
+  const { data: profile } = await sb.from('profiles').select('*').eq('id', session.user.id).single();
+  currentUser = {
+    id: session.user.id,
+    name: profile?.full_name || session.user.email,
+    email: session.user.email,
+    phone: profile?.phone || '',
+    address: profile?.address || '',
+    role: profile?.role || 'customer'
+  };
+  applyUser();
+  loadNotifications();
+  subscribeNotifs();
 }
 function applyUser(){
   document.getElementById('signinBtn').style.display = 'none';
@@ -734,6 +729,8 @@ function applyUser(){
   document.getElementById('udAvatar').textContent = initial;
   document.getElementById('udName').textContent   = currentUser.name;
   document.getElementById('udEmail').textContent  = currentUser.email || 'No email provided';
+  const adminLink = document.getElementById('udAdminLink');
+  if(adminLink) adminLink.style.display = currentUser.role === 'admin' ? 'flex' : 'none';
 }
 function toggleUserMenu(){
   const dd   = document.getElementById('userDropdown');
@@ -746,10 +743,55 @@ function closeUserMenu(){
   document.getElementById('userDropdown').classList.remove('open');
   document.getElementById('uChevron').style.transform = 'rotate(0deg)';
 }
-function doLogout(){
+
+/* ─── NOTIFICATIONS ────────────────────────── */
+async function loadNotifications(){
+  if(!currentUser) return;
+  const { data, error } = await sb.from('notifications').select('*').eq('user_id', currentUser.id).order('created_at', {ascending:false}).limit(20);
+  if(error) return;
+  renderNotifs(data || []);
+}
+function renderNotifs(list){
+  const bell  = document.getElementById('notifBell');
+  const badge = document.getElementById('notifBadge');
+  if(!bell) return;
+  bell.style.display = 'flex';
+  const unread = list.filter(n => !n.read).length;
+  badge.style.display = unread ? 'flex' : 'none';
+  badge.textContent = unread;
+  document.getElementById('notifList').innerHTML = list.length
+    ? list.map(n => `
+      <div class="notif-item ${n.read ? '' : 'unread'}" onclick="markNotifRead(${n.id})">
+        <div class="ni-title">${n.title}</div>
+        <div class="ni-msg">${n.message}</div>
+        <div class="ni-time">${new Date(n.created_at).toLocaleString('en-GB', {day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})}</div>
+      </div>`).join('')
+    : `<div class="notif-empty">No notifications yet</div>`;
+}
+function toggleNotifs(e){
+  if(e) e.stopPropagation();
+  document.getElementById('notifDropdown').classList.toggle('open');
+}
+async function markNotifRead(id){
+  await sb.from('notifications').update({read:true}).eq('id', id);
+  loadNotifications();
+}
+function subscribeNotifs(){
+  if(!currentUser) return;
+  sb.channel('notif-' + currentUser.id)
+    .on('postgres_changes', {event:'INSERT', schema:'public', table:'notifications', filter:`user_id=eq.${currentUser.id}`}, payload => {
+      toast('🔔 ' + payload.new.title, 'g');
+      loadNotifications();
+    })
+    .subscribe();
+}
+async function doLogout(){
+  await sb.auth.signOut();
   currentUser = null;
   document.getElementById('userPill').style.display   = 'none';
   document.getElementById('signinBtn').style.display  = 'flex';
+  const bell = document.getElementById('notifBell');
+  if(bell){ bell.style.display = 'none'; document.getElementById('notifDropdown').classList.remove('open'); }
   closeUserMenu();
   cart = []; updateCartUI();
   toast('👋 Logged out. See you soon!', 'go');
