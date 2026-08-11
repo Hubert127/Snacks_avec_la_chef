@@ -6,12 +6,12 @@
 /* ─── GUARD + SHARED ───────────────────────── */
 async function guardAdmin(){
   const { data: { session } } = await sb.auth.getSession();
-  if(!session){ window.location.href = 'login.html'; return null; }
+  if(!session){ window.location.href = 'index.html'; return null; }
 
   const { data: profile, error } = await sb.from('profiles').select('*').eq('id', session.user.id).single();
   if(error || !profile || !['admin','owner'].includes(profile.role)){
     await sb.auth.signOut();
-    window.location.href = 'login.html';
+    window.location.href = 'index.html';
     return null;
   }
 
@@ -22,7 +22,7 @@ async function guardAdmin(){
 }
 async function adminLogout(){
   await sb.auth.signOut();
-  window.location.href = 'login.html';
+  window.location.href = 'index.html';
 }
 function toast(msg, type = ''){
   const el = document.getElementById('toast');
@@ -36,7 +36,7 @@ function togPwdAdmin(id, btn){
   const el   = document.getElementById(id);
   const show = el.type === 'text';
   el.type    = show ? 'password' : 'text';
-  btn.innerHTML = show ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+  btn.textContent = show ? '👁️' : '🙈';
 }
 function fmtMoney(n){ return (n || 0).toLocaleString() + ' FRW'; }
 function fmtDate(d){
@@ -496,7 +496,7 @@ async function revokeAdmin(id){
 
 /* ─── PAGE BOOT ────────────────────────────── */
 document.addEventListener('DOMContentLoaded', async () => {
-  if(document.getElementById('loginPage')) return; // login.html handles itself
+  if(document.getElementById('loginPage')) return; // admin/index.html (login page) handles itself
 
   const ctx = await guardAdmin();
   if(!ctx) return;

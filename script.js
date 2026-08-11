@@ -662,7 +662,7 @@ function togPwd(id, btn){
   const el   = document.getElementById(id);
   const show = el.type === 'text';
   el.type    = show ? 'password' : 'text';
-  btn.innerHTML = show ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+  btn.textContent = show ? '👁️' : '🙈';
 }
 async function doLogin(){
   const email = document.getElementById('lEmail').value.trim();
